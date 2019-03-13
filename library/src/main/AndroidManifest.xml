@@ -1,2 +1,25 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.handy.keepalive" />
+    package="com.handy.keepalive">
+
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS" />
+
+    <application>
+
+        <activity
+            android:name=".screen.SinglePxActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize|navigation|keyboard"
+            android:excludeFromRecents="true"
+            android:finishOnTaskLaunch="false"
+            android:launchMode="singleInstance"
+            android:process=":keepalive"
+            android:theme="@style/SinglePxActivityStyle" />
+
+        <service
+            android:name=".service.PlayMusicService"
+            android:enabled="false"
+            android:exported="false"
+            android:process=":keepalive" />
+    </application>
+</manifest>
