@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">library</string>
+    <string name="notification_title">@string/app_name</string>
+    <string name="notification_content">后台服务正在运行</string>
 </resources>
