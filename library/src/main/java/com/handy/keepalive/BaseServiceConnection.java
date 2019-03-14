@@ -1,8 +1,11 @@
 package com.handy.keepalive;
 
 import android.content.ComponentName;
+import android.content.Context;
 import android.content.ServiceConnection;
 import android.os.IBinder;
+
+import com.handy.keepalive.utils.ServiceUtil;
 
 /**
  * 服务绑定基础类
@@ -41,5 +44,17 @@ public abstract class BaseServiceConnection implements ServiceConnection {
     }
 
     public void onDisconnected(ComponentName name) {
+    }
+
+    public void connected(Context context, Class<? extends BaseService> cls) {
+        if (!isConnected) {
+            ServiceUtil.bindService(context, cls, this);
+        }
+    }
+
+    public void disconnected(Context context, Class<? extends BaseService> cls) {
+        if (isConnected) {
+            ServiceUtil.unbindService(context, cls, this);
+        }
     }
 }
