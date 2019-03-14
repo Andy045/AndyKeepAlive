@@ -45,7 +45,7 @@ public class HideNotificationService extends Service {
             // 创建新的通知，通过标识符新增或替换已有的通知。
             Notification.Builder builder = new Notification.Builder(this);
             builder.setSmallIcon(R.mipmap.ic_launcher);
-            startForeground(Config.NOTIFICATION_LEVEL, builder.build());
+            startForeground(Config.NOTIFICATION_INDEX, builder.build());
             // 在异步任务中移除业务服务的前台通知。
             new AsyncTask<Void, Void, Void>() {
                 @Override
@@ -56,7 +56,7 @@ public class HideNotificationService extends Service {
                     stopForeground(true);
                     // 移除业务服务的通知
                     NotificationManager manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-                    manager.cancel(Config.NOTIFICATION_LEVEL);
+                    manager.cancel(Config.NOTIFICATION_INDEX);
                     // 结束当前服务
                     stopSelf();
                     return null;

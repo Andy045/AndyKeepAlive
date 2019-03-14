@@ -18,7 +18,7 @@ public class Config {
     /**
      * 业务服务创建的通知标识符
      */
-    public static final int NOTIFICATION_LEVEL = 100;
+    public static final int NOTIFICATION_INDEX = 100;
     /**
      * 统一停止广播标识符
      */
