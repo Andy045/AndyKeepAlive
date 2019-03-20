@@ -28,8 +28,8 @@ public class ServiceUtil {
 
     public static void unbindService(@NonNull final Context context, @NonNull final Class<? extends Service> serviceClass, @NonNull BaseServiceConnection connection) {
         if (connection.isConnected) {
-            stopService(context, serviceClass);
             context.unbindService(connection);
+            stopService(context, serviceClass);
         }
     }
 
