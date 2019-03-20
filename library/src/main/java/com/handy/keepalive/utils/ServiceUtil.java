@@ -33,7 +33,6 @@ public class ServiceUtil {
         }
     }
 
-
     public static void startService(Context context, Class<? extends Service> i) {
         try {
             context.startService(new Intent(context, i));
@@ -50,9 +49,27 @@ public class ServiceUtil {
         }
     }
 
+    public static void startAndBindService(@NonNull final Context context, @NonNull final Class<? extends Service> serviceClass, @NonNull BaseServiceConnection connection) {
+        if (!connection.isConnected) {
+            context.bindService(new Intent(context, serviceClass), connection, Context.BIND_AUTO_CREATE);
+        }
+    }
+
+    public static void stopAndUnbindService(@NonNull final Context context, @NonNull final Class<? extends Service> serviceClass, @NonNull BaseServiceConnection connection) {
+        if (connection.isConnected) {
+            context.unbindService(connection);
+        }
+    }
+
     /**
      * 当前哪个进程使用的时候 就用其上下文发送广播
      */
+    public static void stopServices(Context context, String identifier) {
+        if (context != null) {
+            context.sendBroadcast(new Intent(identifier));
+        }
+    }
+
     public static void stopAllServices(Context context) {
         if (context != null) {
             context.sendBroadcast(new Intent(Config.STOP_BROADCASTRECEIVER_IDENTIFIER));
