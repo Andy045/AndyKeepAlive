@@ -21,7 +21,6 @@ public class ServiceUtil {
 
     public static void bindService(@NonNull final Context context, @NonNull final Class<? extends Service> serviceClass, @NonNull BaseServiceConnection connection) {
         if (!connection.isConnected) {
-            startService(context, serviceClass);
             context.bindService(new Intent(context, serviceClass), connection, Context.BIND_AUTO_CREATE);
         }
     }
@@ -29,21 +28,20 @@ public class ServiceUtil {
     public static void unbindService(@NonNull final Context context, @NonNull final Class<? extends Service> serviceClass, @NonNull BaseServiceConnection connection) {
         if (connection.isConnected) {
             context.unbindService(connection);
-            stopService(context, serviceClass);
         }
     }
 
-    public static void startService(Context context, Class<? extends Service> i) {
+    public static void startService(Context context, Class<? extends Service> serviceClass) {
         try {
-            context.startService(new Intent(context, i));
+            context.startService(new Intent(context, serviceClass));
         } catch (Exception ignored) {
 
         }
     }
 
-    public static void stopService(Context context, Class<? extends Service> i) {
+    public static void stopService(Context context, Class<? extends Service> serviceClass) {
         try {
-            context.stopService(new Intent(context, i));
+            context.stopService(new Intent(context, serviceClass));
         } catch (Exception ignored) {
 
         }
@@ -51,6 +49,7 @@ public class ServiceUtil {
 
     public static void startAndBindService(@NonNull final Context context, @NonNull final Class<? extends Service> serviceClass, @NonNull BaseServiceConnection connection) {
         if (!connection.isConnected) {
+            startService(context, serviceClass);
             context.bindService(new Intent(context, serviceClass), connection, Context.BIND_AUTO_CREATE);
         }
     }
@@ -58,19 +57,20 @@ public class ServiceUtil {
     public static void stopAndUnbindService(@NonNull final Context context, @NonNull final Class<? extends Service> serviceClass, @NonNull BaseServiceConnection connection) {
         if (connection.isConnected) {
             context.unbindService(connection);
+            stopService(context, serviceClass);
         }
     }
 
     /**
      * 当前哪个进程使用的时候 就用其上下文发送广播
      */
-    public static void stopServices(Context context, String identifier) {
+    public static void finishService(Context context, @NonNull final Class<? extends Service> serviceClass) {
         if (context != null) {
-            context.sendBroadcast(new Intent(identifier));
+            context.sendBroadcast(new Intent(serviceClass.getName()));
         }
     }
 
-    public static void stopAllServices(Context context) {
+    public static void finishAllServices(Context context) {
         if (context != null) {
             context.sendBroadcast(new Intent(Config.STOP_BROADCASTRECEIVER_IDENTIFIER));
         }
