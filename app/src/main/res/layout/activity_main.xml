@@ -11,7 +11,6 @@
         android:layout_height="0dp"
         android:layout_weight="1"
         android:gravity="center"
-        android:padding="8dp"
         android:text="Hello World!"
         android:textColor="#212121"
         android:textSize="34sp"
@@ -25,10 +24,12 @@
         android:layout_marginRight="6dp"
         android:background="@drawable/common_selector_btn"
         android:gravity="center"
-        android:padding="8dp"
+        android:padding="6dp"
+        android:stateListAnimator="@null"
         android:text="普通后台服务 - 开始"
         android:textColor="#ffffff"
-        android:textSize="17sp" />
+        android:textSize="15sp"
+        tools:ignore="UnusedAttribute" />
 
     <Button
         android:layout_width="match_parent"
@@ -38,10 +39,12 @@
         android:layout_marginRight="6dp"
         android:background="@drawable/common_selector_btn"
         android:gravity="center"
-        android:padding="8dp"
+        android:padding="6dp"
+        android:stateListAnimator="@null"
         android:text="普通后台服务 - 结束"
         android:textColor="#ffffff"
-        android:textSize="17sp" />
+        android:textSize="15sp"
+        tools:ignore="UnusedAttribute" />
 
     <Button
         android:layout_width="match_parent"
@@ -51,10 +54,12 @@
         android:layout_marginRight="6dp"
         android:background="@drawable/common_selector_btn"
         android:gravity="center"
-        android:padding="8dp"
+        android:padding="6dp"
+        android:stateListAnimator="@null"
         android:text="保活后台服务 - 开始"
         android:textColor="#ffffff"
-        android:textSize="17sp" />
+        android:textSize="15sp"
+        tools:ignore="UnusedAttribute" />
 
     <Button
         android:layout_width="match_parent"
@@ -65,9 +70,11 @@
         android:layout_marginBottom="3dp"
         android:background="@drawable/common_selector_btn"
         android:gravity="center"
-        android:padding="8dp"
+        android:padding="6dp"
+        android:stateListAnimator="@null"
         android:text="后台保活服务 - 结束"
         android:textColor="#ffffff"
-        android:textSize="17sp" />
+        android:textSize="15sp"
+        tools:ignore="UnusedAttribute" />
 
 </LinearLayout>
