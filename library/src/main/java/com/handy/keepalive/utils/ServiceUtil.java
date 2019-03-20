@@ -41,7 +41,7 @@ public class ServiceUtil {
 
     public static void stopService(Context context, Class<? extends Service> serviceClass) {
         try {
-            context.stopService(new Intent(context, serviceClass));
+            finishService(context, serviceClass);
         } catch (Exception ignored) {
 
         }
@@ -57,7 +57,7 @@ public class ServiceUtil {
     public static void stopAndUnbindService(@NonNull final Context context, @NonNull final Class<? extends Service> serviceClass, @NonNull BaseServiceConnection connection) {
         if (connection.isConnected) {
             context.unbindService(connection);
-            stopService(context, serviceClass);
+            finishService(context, serviceClass);
         }
     }
 
