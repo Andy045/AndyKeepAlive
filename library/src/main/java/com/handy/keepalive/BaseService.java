@@ -23,15 +23,10 @@ import com.handy.keepalive.utils.ServiceUtil;
  */
 public abstract class BaseService extends Service implements BaseServiceApi {
 
-    /**
-     * 销毁广播的广播标识符
-     */
-    public String stopBroadcastreceiverIdentifier;
-
     private Context context;
-    private String className;
     private boolean isFinishFromReceiver;
-    private StopBroadcastReceiver stopBroadcastReceiver;
+    private StopBroadcastReceiver stopAllBroadcastReceiver;
+    private StopBroadcastReceiver stopSelfBroadcastReceiver;
 
     @Override
     public void onCreate() {
@@ -41,31 +36,25 @@ public abstract class BaseService extends Service implements BaseServiceApi {
         }
 
         context = this;
-        className = this.getClass().getSimpleName();
 
         // TODO: 2019/3/14 创建前台通知
         startForeground(Config.NOTIFICATION_INDEX, getNotification());
 
         // TODO: 2019/3/14 注册销毁广播
-        stopBroadcastreceiverIdentifier = Config.STOP_BROADCASTRECEIVER_IDENTIFIER;
-        stopBroadcastReceiver = new StopBroadcastReceiver(new StopBroadcastReceiver.CallBack() {
+        stopSelfBroadcastReceiver = new StopBroadcastReceiver(new StopBroadcastReceiver.CallBack() {
             @Override
             public void onReceive(Context context, Intent intent) {
-                if (Config.isShowLog) {
-                    Log.d(Config.LOG_TAG, className + " => StopBroadcastReceiver.CallBack()");
-                }
-
-                isFinishFromReceiver = true;
-
-                if (stopBroadcastReceiver != null) {
-                    unregisterReceiver(stopBroadcastReceiver);
-                    stopBroadcastReceiver = null;
-                }
-
-                stopSelf();
+                onFinish("stopSelfBroadcastReceiver");
             }
         });
-        registerReceiver(stopBroadcastReceiver, stopBroadcastReceiver.getIntentFilter(stopBroadcastreceiverIdentifier));
+        stopAllBroadcastReceiver = new StopBroadcastReceiver(new StopBroadcastReceiver.CallBack() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                onFinish("stopAllBroadcastReceiver");
+            }
+        });
+        registerReceiver(stopSelfBroadcastReceiver, stopSelfBroadcastReceiver.getIntentFilter(this.getClass().getName()));
+        registerReceiver(stopAllBroadcastReceiver, stopAllBroadcastReceiver.getIntentFilter(Config.STOP_BROADCASTRECEIVER_IDENTIFIER));
     }
 
     @Override
@@ -116,7 +105,7 @@ public abstract class BaseService extends Service implements BaseServiceApi {
         mManager.cancel(Config.NOTIFICATION_INDEX);
 
         // TODO: 2019/3/14 重启自身和守护服务
-        if (!isFinishFromReceiver) {
+        if (isKeepAlive() && !isFinishFromReceiver) {
             ServiceUtil.startService(context, this.getClass());
         }
     }
@@ -129,6 +118,26 @@ public abstract class BaseService extends Service implements BaseServiceApi {
     @Override
     public boolean cancelIBinder(Intent intent) {
         return super.onUnbind(intent);
+    }
+
+    @Override
+    public void onFinish(String stopBroadcastReceiverName) {
+        if (Config.isShowLog) {
+            Log.d(Config.LOG_TAG, this.getClass().getSimpleName() + " => " + stopBroadcastReceiverName + ".onFinish()");
+        }
+
+        isFinishFromReceiver = true;
+
+        if (stopAllBroadcastReceiver != null) {
+            unregisterReceiver(stopAllBroadcastReceiver);
+            stopAllBroadcastReceiver = null;
+        }
+        if (stopSelfBroadcastReceiver != null) {
+            unregisterReceiver(stopSelfBroadcastReceiver);
+            stopSelfBroadcastReceiver = null;
+        }
+
+        stopSelf();
     }
 
     @Override
