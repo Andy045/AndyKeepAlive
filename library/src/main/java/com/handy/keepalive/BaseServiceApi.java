@@ -15,11 +15,11 @@ import android.os.IBinder;
 public interface BaseServiceApi {
     Notification getNotification();
 
-    IBinder createIBinder();
+    IBinder createIBinder(Intent intent);
 
-    void cancelIBinder();
+    boolean cancelIBinder(Intent intent);
 
-    void onStart(Intent intent, int flags, int startId);
+    int onStart(Intent intent, int flags, int startId);
 
     void onFinish();
 }
