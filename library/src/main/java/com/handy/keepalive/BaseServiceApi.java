@@ -1,6 +1,7 @@
 package com.handy.keepalive;
 
 import android.app.Notification;
+import android.content.Intent;
 import android.os.IBinder;
 
 /**
@@ -15,4 +16,10 @@ public interface BaseServiceApi {
     Notification getNotification();
 
     IBinder createIBinder();
+
+    void cancelIBinder();
+
+    void onStart(Intent intent, int flags, int startId);
+
+    void onFinish();
 }
