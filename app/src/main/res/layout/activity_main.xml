@@ -1,18 +1,73 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context="com.handy.keepalive.app.MainActivity">
 
     <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:padding="8dp"
         android:text="Hello World!"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:textColor="#212121"
+        android:textSize="34sp"
+        android:textStyle="bold" />
 
-</android.support.constraint.ConstraintLayout>
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="6dp"
+        android:layout_marginTop="3dp"
+        android:layout_marginRight="6dp"
+        android:background="@drawable/common_selector_btn"
+        android:gravity="center"
+        android:padding="8dp"
+        android:text="普通后台服务 - 开始"
+        android:textColor="#ffffff"
+        android:textSize="17sp" />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="6dp"
+        android:layout_marginTop="3dp"
+        android:layout_marginRight="6dp"
+        android:background="@drawable/common_selector_btn"
+        android:gravity="center"
+        android:padding="8dp"
+        android:text="普通后台服务 - 结束"
+        android:textColor="#ffffff"
+        android:textSize="17sp" />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="6dp"
+        android:layout_marginTop="3dp"
+        android:layout_marginRight="6dp"
+        android:background="@drawable/common_selector_btn"
+        android:gravity="center"
+        android:padding="8dp"
+        android:text="保活后台服务 - 开始"
+        android:textColor="#ffffff"
+        android:textSize="17sp" />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="6dp"
+        android:layout_marginTop="3dp"
+        android:layout_marginRight="6dp"
+        android:layout_marginBottom="3dp"
+        android:background="@drawable/common_selector_btn"
+        android:gravity="center"
+        android:padding="8dp"
+        android:text="后台保活服务 - 结束"
+        android:textColor="#ffffff"
+        android:textSize="17sp" />
+
+</LinearLayout>
