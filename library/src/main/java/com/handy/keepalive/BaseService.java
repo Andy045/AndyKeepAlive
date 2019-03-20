@@ -66,8 +66,6 @@ public abstract class BaseService extends Service implements BaseServiceApi {
             }
         });
         registerReceiver(stopBroadcastReceiver, stopBroadcastReceiver.getIntentFilter(stopBroadcastreceiverIdentifier));
-
-
     }
 
     @Override
@@ -78,7 +76,7 @@ public abstract class BaseService extends Service implements BaseServiceApi {
 
         // TODO: 2019/3/14 启动守护服务
 
-        return START_STICKY;
+        return onStart(intent, flags, startId);
     }
 
     @Nullable
@@ -87,7 +85,7 @@ public abstract class BaseService extends Service implements BaseServiceApi {
         if (Config.isShowLog) {
             Log.d(Config.LOG_TAG, this.getClass().getSimpleName() + " => onBind()");
         }
-        return createIBinder();
+        return createIBinder(intent);
     }
 
     @Override
@@ -95,7 +93,7 @@ public abstract class BaseService extends Service implements BaseServiceApi {
         if (Config.isShowLog) {
             Log.d(Config.LOG_TAG, this.getClass().getSimpleName() + " => onUnbind()");
         }
-        return super.onUnbind(intent);
+        return cancelIBinder(intent);
     }
 
     @Override
@@ -121,6 +119,16 @@ public abstract class BaseService extends Service implements BaseServiceApi {
         if (!isFinishFromReceiver) {
             ServiceUtil.startService(context, this.getClass());
         }
+    }
+
+    @Override
+    public int onStart(Intent intent, int flags, int startId) {
+        return START_STICKY;
+    }
+
+    @Override
+    public boolean cancelIBinder(Intent intent) {
+        return super.onUnbind(intent);
     }
 
     @Override
