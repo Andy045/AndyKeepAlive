@@ -23,5 +23,5 @@ public interface BaseServiceApi {
 
     int onStart(Intent intent, int flags, int startId);
 
-    void onFinish();
+    void onFinish(String stopBroadcastReceiverName);
 }
