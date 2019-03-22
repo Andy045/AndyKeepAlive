@@ -113,6 +113,11 @@ public abstract class BaseService extends Service implements BaseServiceApi {
     }
 
     @Override
+    public IBinder createIBinder(Intent intent) {
+        return null;
+    }
+
+    @Override
     public boolean cancelIBinder(Intent intent) {
         return super.onUnbind(intent);
     }
