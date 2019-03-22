@@ -15,8 +15,6 @@ import android.os.IBinder;
 public interface BaseServiceApi {
     Notification getNotification();
 
-    boolean isKeepAlive();
-
     IBinder createIBinder(Intent intent);
 
     boolean cancelIBinder(Intent intent);
