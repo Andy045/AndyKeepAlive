@@ -44,12 +44,14 @@ public abstract class BaseService extends Service implements BaseServiceApi {
         stopSelfBroadcastReceiver = new StopBroadcastReceiver(new StopBroadcastReceiver.CallBack() {
             @Override
             public void onReceive(Context context, Intent intent) {
+                isFinishFromReceiver = true;
                 onFinish("stopSelfBroadcastReceiver");
             }
         });
         stopAllBroadcastReceiver = new StopBroadcastReceiver(new StopBroadcastReceiver.CallBack() {
             @Override
             public void onReceive(Context context, Intent intent) {
+                isFinishFromReceiver = true;
                 onFinish("stopAllBroadcastReceiver");
             }
         });
@@ -104,9 +106,14 @@ public abstract class BaseService extends Service implements BaseServiceApi {
         NotificationManager mManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         mManager.cancel(Config.NOTIFICATION_INDEX);
 
-        // TODO: 2019/3/14 重启自身和守护服务
-        if (isKeepAlive() && !isFinishFromReceiver) {
-            ServiceUtil.startService(context, this.getClass());
+        if (!isFinishFromReceiver) {
+            if (isKeepAlive()) {
+                // TODO: 2019/3/14 重启自身和守护服务
+                ServiceUtil.startService(context, this.getClass());
+            } else {
+                // TODO: 2019/3/14 正常结束服务
+                onFinish("onDestroy");
+            }
         }
     }
 
@@ -121,20 +128,18 @@ public abstract class BaseService extends Service implements BaseServiceApi {
     }
 
     @Override
-    public void onFinish(String stopBroadcastReceiverName) {
+    public void onFinish(String logTag) {
         if (Config.isShowLog) {
-            Log.d(Config.LOG_TAG, this.getClass().getSimpleName() + " => " + stopBroadcastReceiverName + ".onFinish()");
+            Log.d(Config.LOG_TAG, this.getClass().getSimpleName() + " => " + logTag + ".onFinish()");
         }
 
-        isFinishFromReceiver = true;
-
-        if (stopAllBroadcastReceiver != null) {
-            unregisterReceiver(stopAllBroadcastReceiver);
-            stopAllBroadcastReceiver = null;
-        }
         if (stopSelfBroadcastReceiver != null) {
             unregisterReceiver(stopSelfBroadcastReceiver);
             stopSelfBroadcastReceiver = null;
+        }
+        if (stopAllBroadcastReceiver != null) {
+            unregisterReceiver(stopAllBroadcastReceiver);
+            stopAllBroadcastReceiver = null;
         }
 
         stopSelf();
