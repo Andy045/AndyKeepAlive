@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.support.annotation.NonNull;
 
 import com.handy.keepalive.BaseServiceConnection;
+import com.handy.keepalive.config.Config;
 
 import java.util.Objects;
 
@@ -61,6 +62,21 @@ public class ServiceUtil {
         if (connection.isConnected) {
             unbindService(context, serviceClass, connection);
             stopService(context, serviceClass);
+        }
+    }
+
+    /**
+     * 当前哪个进程使用的时候 就用其上下文发送广播
+     */
+    public static void finishService(Context context, @NonNull final Class<? extends Service> serviceClass) {
+        if (context != null) {
+            context.sendBroadcast(new Intent(serviceClass.getName()));
+        }
+    }
+
+    public static void finishAllServices(Context context) {
+        if (context != null) {
+            context.sendBroadcast(new Intent(Config.STOP_BROADCASTRECEIVER_IDENTIFIER));
         }
     }
 }
