@@ -11,7 +11,6 @@ import android.util.Log;
 
 import com.handy.keepalive.config.Config;
 import com.handy.keepalive.reciver.StopBroadcastReceiver;
-import com.handy.keepalive.utils.ServiceUtil;
 
 /**
  * 业务服务基础类
@@ -102,18 +101,9 @@ public abstract class BaseService extends Service implements BaseServiceApi {
             Log.d(Config.LOG_TAG, this.getClass().getSimpleName() + " => onDestroy()");
         }
 
-        // TODO: 2019/3/14 销毁前台通知
-        NotificationManager mManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-        mManager.cancel(Config.NOTIFICATION_INDEX);
-
         if (!isFinishFromReceiver) {
-            if (isKeepAlive()) {
-                // TODO: 2019/3/14 重启自身和守护服务
-                ServiceUtil.startService(context, this.getClass());
-            } else {
-                // TODO: 2019/3/14 正常结束服务
-                onFinish("onDestroy");
-            }
+            // TODO: 2019/3/14 正常结束服务
+            onFinish("onDestroy");
         }
     }
 
@@ -132,6 +122,10 @@ public abstract class BaseService extends Service implements BaseServiceApi {
         if (Config.isShowLog) {
             Log.d(Config.LOG_TAG, this.getClass().getSimpleName() + " => " + logTag + ".onFinish()");
         }
+
+        // TODO: 2019/3/14 销毁前台通知
+        NotificationManager mManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+        mManager.cancel(Config.NOTIFICATION_INDEX);
 
         if (stopSelfBroadcastReceiver != null) {
             unregisterReceiver(stopSelfBroadcastReceiver);
