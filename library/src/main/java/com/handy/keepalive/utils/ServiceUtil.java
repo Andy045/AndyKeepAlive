@@ -61,6 +61,7 @@ public class ServiceUtil {
     public static void stopAndUnbindService(@NonNull final Context context, @NonNull final Class<? extends Service> serviceClass, @NonNull BaseServiceConnection connection) {
         if (connection.isConnected) {
             context.unbindService(connection);
+            connection.onServiceDisconnected(new ComponentName(Objects.requireNonNull(serviceClass.getPackage()).getName(), serviceClass.getName()));
             finishService(context, serviceClass);
         }
     }
