@@ -70,10 +70,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btn_default_start:
-                ServiceUtil.startService(MainActivity.this, TimeLockService.class);
+                ServiceUtil.startAndBindService(MainActivity.this, TimeLockService.class, baseServiceConnection);
                 break;
             case R.id.btn_default_stop:
-                ServiceUtil.stopService(MainActivity.this, TimeLockService.class);
+                ServiceUtil.stopAndUnbindService(MainActivity.this, TimeLockService.class, baseServiceConnection);
                 break;
             case R.id.btn_alive_start:
                 ServiceUtil.bindService(MainActivity.this, TimeLockService.class, baseServiceConnection);
