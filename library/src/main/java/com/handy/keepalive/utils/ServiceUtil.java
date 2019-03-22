@@ -52,17 +52,13 @@ public class ServiceUtil {
     }
 
     public static void startAndBindService(@NonNull final Context context, @NonNull final Class<? extends Service> serviceClass, @NonNull BaseServiceConnection connection) {
-        if (!connection.isConnected) {
-            startService(context, serviceClass);
-            bindService(context, serviceClass, connection);
-        }
+        startService(context, serviceClass);
+        bindService(context, serviceClass, connection);
     }
 
     public static void stopAndUnbindService(@NonNull final Context context, @NonNull final Class<? extends Service> serviceClass, @NonNull BaseServiceConnection connection) {
-        if (connection.isConnected) {
-            unbindService(context, serviceClass, connection);
-            stopService(context, serviceClass);
-        }
+        unbindService(context, serviceClass, connection);
+        stopService(context, serviceClass);
     }
 
     /**
