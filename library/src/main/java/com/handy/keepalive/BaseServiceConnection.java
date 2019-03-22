@@ -38,8 +38,10 @@ public abstract class BaseServiceConnection implements ServiceConnection {
     }
 
     public void onConnected(ComponentName name, IBinder service) {
+
     }
 
     public void onDisconnected(ComponentName name) {
+
     }
 }
