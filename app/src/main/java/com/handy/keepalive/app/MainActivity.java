@@ -84,4 +84,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             default:
         }
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        ServiceUtil.stopAndUnbindService(MainActivity.this, TimeLockService.class, baseServiceConnection);
+    }
 }
