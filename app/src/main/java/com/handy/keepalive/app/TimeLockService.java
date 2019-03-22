@@ -25,11 +25,6 @@ public class TimeLockService extends BaseService {
     private CountDownTimer countDownTimer;
 
     @Override
-    public boolean isKeepAlive() {
-        return false;
-    }
-
-    @Override
     public IBinder createIBinder(Intent intent) {
         if (myBinder == null) {
             myBinder = new MyBinder();
