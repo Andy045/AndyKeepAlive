@@ -1,12 +1,15 @@
 package com.handy.keepalive.utils;
 
 import android.app.Service;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 
 import com.handy.keepalive.BaseServiceConnection;
 import com.handy.keepalive.config.Config;
+
+import java.util.Objects;
 
 
 /**
@@ -28,6 +31,7 @@ public class ServiceUtil {
     public static void unbindService(@NonNull final Context context, @NonNull final Class<? extends Service> serviceClass, @NonNull BaseServiceConnection connection) {
         if (connection.isConnected) {
             context.unbindService(connection);
+            connection.onServiceDisconnected(new ComponentName(Objects.requireNonNull(serviceClass.getPackage()).getName(), serviceClass.getName()));
         }
     }
 
