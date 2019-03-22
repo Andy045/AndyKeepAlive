@@ -7,6 +7,7 @@
     tools:context="com.handy.keepalive.app.MainActivity">
 
     <TextView
+        android:id="@+id/tv_content"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
@@ -17,6 +18,7 @@
         android:textStyle="bold" />
 
     <Button
+        android:id="@+id/btn_default_start"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="6dp"
@@ -32,6 +34,7 @@
         tools:ignore="UnusedAttribute" />
 
     <Button
+        android:id="@+id/btn_default_stop"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="6dp"
@@ -47,6 +50,7 @@
         tools:ignore="UnusedAttribute" />
 
     <Button
+        android:id="@+id/btn_alive_start"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="6dp"
@@ -62,6 +66,7 @@
         tools:ignore="UnusedAttribute" />
 
     <Button
+        android:id="@+id/btn_alive_stop"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="6dp"
