@@ -38,12 +38,10 @@ public class SinglePxActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onPause() {
-        super.onPause();
-        if (isFinishing()) {
-            if (Config.isShowLog) {
-                Log.d(Config.LOG_TAG, this.getClass().getSimpleName() + " => onFinish()");
-            }
+    protected void onDestroy() {
+        super.onDestroy();
+        if (Config.isShowLog) {
+            Log.d(Config.LOG_TAG, this.getClass().getSimpleName() + " => onFinish()");
         }
     }
 }
