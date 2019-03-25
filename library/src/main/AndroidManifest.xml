@@ -16,10 +16,7 @@
             android:process=":keepalive"
             android:theme="@style/SinglePxActivityStyle" />
 
-        <service
-            android:name=".service.PlayMusicService"
-            android:enabled="false"
-            android:exported="false" />
+        <service android:name=".service.PlayMusicService" />
 
         <service android:name=".service.HideNotificationService" />
     </application>
