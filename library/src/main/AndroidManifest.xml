@@ -13,7 +13,6 @@
             android:excludeFromRecents="true"
             android:finishOnTaskLaunch="false"
             android:launchMode="singleInstance"
-            android:process=":keepalive"
             android:theme="@style/SinglePxActivityStyle" />
 
         <service android:name=".service.PlayMusicService" />
