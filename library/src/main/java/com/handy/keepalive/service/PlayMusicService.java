@@ -2,7 +2,6 @@ package com.handy.keepalive.service;
 
 import android.annotation.SuppressLint;
 import android.app.Service;
-import android.content.Context;
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.AsyncTask;
@@ -12,7 +11,6 @@ import android.util.Log;
 
 import com.handy.keepalive.R;
 import com.handy.keepalive.config.Config;
-import com.handy.keepalive.reciver.StopBroadcastReceiver;
 
 /**
  * 后台播放无声音乐
@@ -36,17 +34,6 @@ public class PlayMusicService extends Service {
         super.onCreate();
         mMediaPlayer = MediaPlayer.create(getApplicationContext(), R.raw.silent);
         mMediaPlayer.setLooping(true);
-
-
-        // 注册结束广播
-        StopBroadcastReceiver stopBroadcastReceiver = new StopBroadcastReceiver(new StopBroadcastReceiver.CallBack() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                isFinishFromReceiver = true;
-                stopSelf();
-            }
-        });
-        registerReceiver(stopBroadcastReceiver, stopBroadcastReceiver.getIntentFilter(Config.STOP_BROADCASTRECEIVER_IDENTIFIER));
     }
 
     @SuppressLint("StaticFieldLeak")
@@ -70,12 +57,11 @@ public class PlayMusicService extends Service {
     @Override
     public void onDestroy() {
         super.onDestroy();
-
         if (mMediaPlayer != null) {
             if (Config.isShowLog) {
                 Log.d(Config.LOG_TAG, "关闭后台播放音乐");
-                mMediaPlayer.stop();
             }
+            mMediaPlayer.stop();
         }
     }
 
