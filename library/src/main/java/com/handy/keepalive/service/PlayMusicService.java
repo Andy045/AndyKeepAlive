@@ -50,7 +50,7 @@ public class PlayMusicService extends Service {
                 }
                 return null;
             }
-        };
+        }.execute();
         return START_STICKY;
     }
 
