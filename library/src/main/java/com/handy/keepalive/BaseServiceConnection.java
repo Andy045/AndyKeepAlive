@@ -7,8 +7,6 @@ import android.util.Log;
 
 import com.handy.keepalive.config.Config;
 
-import java.util.Objects;
-
 /**
  * 服务绑定基础类
  *
@@ -24,7 +22,7 @@ public abstract class BaseServiceConnection implements ServiceConnection {
     @Override
     public void onServiceConnected(ComponentName name, IBinder service) {
         if (Config.isShowLog) {
-            Log.d(Config.LOG_TAG, Objects.requireNonNull(this.getClass().getSuperclass()).getSimpleName() + ".onServiceConnected()");
+            Log.d(Config.LOG_TAG, this.getClass().getSuperclass() == null ? "BaseServiceConnection" : this.getClass().getSuperclass().getSimpleName() + ".onServiceConnected()");
         }
         isConnected = true;
         onConnected(name, service);
@@ -33,7 +31,7 @@ public abstract class BaseServiceConnection implements ServiceConnection {
     @Override
     public void onServiceDisconnected(ComponentName name) {
         if (Config.isShowLog) {
-            Log.d(Config.LOG_TAG, Objects.requireNonNull(this.getClass().getSuperclass()).getSimpleName() + ".onServiceDisconnected()");
+            Log.d(Config.LOG_TAG, this.getClass().getSuperclass() == null ? "BaseServiceConnection" : this.getClass().getSuperclass().getSimpleName() + ".onServiceDisconnected()");
         }
         isConnected = false;
         onDisconnected(name);
