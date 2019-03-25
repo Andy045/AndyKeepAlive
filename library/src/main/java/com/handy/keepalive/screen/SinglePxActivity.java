@@ -1,7 +1,5 @@
 package com.handy.keepalive.screen;
 
-import android.app.ActivityManager;
-import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -12,8 +10,6 @@ import android.view.WindowManager;
 
 import com.handy.keepalive.config.Config;
 
-import java.util.ArrayList;
-
 /**
  * 1个像素点的Activity
  *
@@ -23,25 +19,12 @@ import java.util.ArrayList;
  * @modified By liujie
  */
 public class SinglePxActivity extends AppCompatActivity {
-    /**
-     * 判断服务是否已经正在运行
-     */
-    public static boolean isServiceRunning(Context mContext, String className) {
-        ActivityManager myManager = (ActivityManager) mContext.getApplicationContext().getSystemService(Context.ACTIVITY_SERVICE);
-        ArrayList<ActivityManager.RunningServiceInfo> runningService = (ArrayList<ActivityManager.RunningServiceInfo>) myManager.getRunningServices(30);
-        for (int i = 0; i < runningService.size(); i++) {
-            if (runningService.get(i).service.getClassName().equals(className)) {
-                return true;
-            }
-        }
-        return false;
-    }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (Config.isShowLog) {
-            Log.d(Config.LOG_TAG, "SinglePxActivity => onCreate()");
+            Log.d(Config.LOG_TAG, this.getClass().getSimpleName() + " => onCreate()");
         }
         Window window = getWindow();
         window.setGravity(Gravity.START | Gravity.TOP);
@@ -59,7 +42,7 @@ public class SinglePxActivity extends AppCompatActivity {
         super.onPause();
         if (isFinishing()) {
             if (Config.isShowLog) {
-                Log.d(Config.LOG_TAG, "SinglePxActivity => onFinish()");
+                Log.d(Config.LOG_TAG, this.getClass().getSimpleName() + " => onFinish()");
             }
         }
     }
