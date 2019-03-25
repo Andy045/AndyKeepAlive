@@ -42,9 +42,10 @@ public class ScreenManager {
      */
     public void startActivity(Context context) {
         if (Config.isShowLog) {
-            Log.d(Config.LOG_TAG, "SinglePxActivity is Started");
+            Log.d(Config.LOG_TAG, "一个像素的Activity已启动");
         }
         Intent intent = new Intent();
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.setClass(context, SinglePxActivity.class);
         context.startActivity(intent);
     }
@@ -54,7 +55,7 @@ public class ScreenManager {
      */
     public void finishActivity() {
         if (Config.isShowLog) {
-            Log.d(Config.LOG_TAG, "SinglePxActivity is Finished");
+            Log.d(Config.LOG_TAG, "一个像素的Activity已结束");
         }
         if (this.weakReference != null) {
             Activity activity = this.weakReference.get();
