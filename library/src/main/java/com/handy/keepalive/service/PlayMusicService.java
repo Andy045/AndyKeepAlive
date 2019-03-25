@@ -1,14 +1,12 @@
 package com.handy.keepalive.service;
 
 import android.annotation.SuppressLint;
-import android.app.Service;
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.AsyncTask;
-import android.os.IBinder;
-import android.support.annotation.Nullable;
 import android.util.Log;
 
+import com.handy.keepalive.BaseService;
 import com.handy.keepalive.R;
 import com.handy.keepalive.config.Config;
 
@@ -20,12 +18,7 @@ import com.handy.keepalive.config.Config;
  * @date Created in 2019/3/8 10:53 AM
  * @modified By liujie
  */
-public class PlayMusicService extends Service {
-
-    /**
-     * 销毁标识位。当启用销毁时重建功能后。通过结束广播控制此标识位，用于销毁时不再重建自身。
-     */
-    public boolean isFinishFromReceiver = false;
+public class PlayMusicService extends BaseService {
 
     private MediaPlayer mMediaPlayer;
 
@@ -38,7 +31,7 @@ public class PlayMusicService extends Service {
 
     @SuppressLint("StaticFieldLeak")
     @Override
-    public int onStartCommand(Intent intent, int flags, int startId) {
+    public int onStart(Intent intent, int flags, int startId) {
         new AsyncTask<Void, Void, Void>() {
             @Override
             protected Void doInBackground(Void... voids) {
@@ -51,23 +44,17 @@ public class PlayMusicService extends Service {
                 return null;
             }
         }.execute();
-        return START_STICKY;
+        return super.onStart(intent, flags, startId);
     }
 
     @Override
-    public void onDestroy() {
-        super.onDestroy();
+    public void onFinish(String logTag) {
+        super.onFinish(logTag);
         if (mMediaPlayer != null) {
             if (Config.isShowLog) {
                 Log.d(Config.LOG_TAG, "关闭后台播放音乐");
             }
             mMediaPlayer.stop();
         }
-    }
-
-    @Nullable
-    @Override
-    public IBinder onBind(Intent intent) {
-        return null;
     }
 }
