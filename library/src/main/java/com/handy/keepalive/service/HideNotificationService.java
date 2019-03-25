@@ -54,7 +54,7 @@ public class HideNotificationService extends Service {
                 @Override
                 protected Void doInBackground(Void... voids) {
                     // 1秒延迟
-                    SystemClock.sleep(1000);
+                    SystemClock.sleep(500);
                     // 取消当前服务的前台
                     stopForeground(true);
                     // 移除业务服务的通知
