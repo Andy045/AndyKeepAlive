@@ -32,12 +32,13 @@ public abstract class BaseService extends Service implements BaseServiceApi {
     private boolean isFinishFromReceiver;
     private StopBroadcastReceiver stopAllBroadcastReceiver;
     private StopBroadcastReceiver stopSelfBroadcastReceiver;
+    private ScreenManager screenManager;
+    private ScreenReceiverUtil screenReceiverUtil;
+
     public boolean isPlayMusic = false;
     public boolean isShowNotification = false;
     public boolean isHideNotification = false;
     public boolean isUseSinglePxActivity = false;
-    private ScreenManager screenManager;
-    private ScreenReceiverUtil screenReceiverUtil;
 
     @Override
     public void onCreate() {
