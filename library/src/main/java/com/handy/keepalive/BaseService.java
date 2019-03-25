@@ -5,12 +5,18 @@ import android.app.NotificationManager;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
 import com.handy.keepalive.config.Config;
 import com.handy.keepalive.reciver.StopBroadcastReceiver;
+import com.handy.keepalive.screen.ScreenManager;
+import com.handy.keepalive.screen.ScreenReceiverUtil;
+import com.handy.keepalive.service.HideNotificationService;
+import com.handy.keepalive.service.PlayMusicService;
+import com.handy.keepalive.utils.ServiceUtil;
 
 /**
  * 业务服务基础类
@@ -26,6 +32,12 @@ public abstract class BaseService extends Service implements BaseServiceApi {
     private boolean isFinishFromReceiver;
     private StopBroadcastReceiver stopAllBroadcastReceiver;
     private StopBroadcastReceiver stopSelfBroadcastReceiver;
+    public boolean isPlayMusic = false;
+    public boolean isShowNotification = false;
+    public boolean isHideNotification = false;
+    public boolean isUseSinglePxActivity = false;
+    private ScreenManager screenManager;
+    private ScreenReceiverUtil screenReceiverUtil;
 
     @Override
     public void onCreate() {
@@ -36,8 +48,48 @@ public abstract class BaseService extends Service implements BaseServiceApi {
 
         context = this;
 
-        // TODO: 2019/3/14 创建前台通知
-        startForeground(Config.NOTIFICATION_INDEX, getNotification());
+        // TODO: 2019/3/14 创建前台通知，并判断是否需要隐藏通知栏中的UI
+        if (isShowNotification) {
+            startForeground(Config.NOTIFICATION_INDEX, getNotification());
+            if (isHideNotification) {
+                //启动前台服务而不显示通知的漏洞已在 API Level 25 修复，大快人心！
+                if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.N) {
+                    //利用漏洞在 API Level 17 及以下的 Android 系统中，启动前台服务而不显示通知
+                    startForeground(Config.NOTIFICATION_INDEX, new Notification());
+                    //利用漏洞在 API Level 18 及以上的 Android 系统中，启动前台服务而不显示通知
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
+                        ServiceUtil.startService(context, HideNotificationService.class);
+                    }
+                }
+            }
+        }
+
+        // TODO: 2019/3/25 后台播放无声音乐
+        if (isPlayMusic) {
+            ServiceUtil.startService(context, PlayMusicService.class);
+        }
+
+        // TODO: 2019/3/25 监听屏幕，准备一个像素点的Activity
+        if (isUseSinglePxActivity) {
+            screenManager = ScreenManager.getInstance();
+            screenReceiverUtil = new ScreenReceiverUtil(context);
+            screenReceiverUtil.registerScreenReceiverListener(new ScreenReceiverUtil.SreenStateListener() {
+                @Override
+                public void onSreenOn() {
+
+                }
+
+                @Override
+                public void onSreenOff() {
+                    screenManager.startActivity(context);
+                }
+
+                @Override
+                public void onUserPresent() {
+                    screenManager.finishActivity();
+                }
+            });
+        }
 
         // TODO: 2019/3/14 注册销毁广播
         stopSelfBroadcastReceiver = new StopBroadcastReceiver(new StopBroadcastReceiver.CallBack() {
@@ -63,8 +115,6 @@ public abstract class BaseService extends Service implements BaseServiceApi {
         if (Config.isShowLog) {
             Log.d(Config.LOG_TAG, this.getClass().getSimpleName() + " => onStartCommand()");
         }
-
-        // TODO: 2019/3/14 启动守护服务
 
         return onStart(intent, flags, startId);
     }
@@ -129,9 +179,30 @@ public abstract class BaseService extends Service implements BaseServiceApi {
         }
 
         // TODO: 2019/3/14 销毁前台通知
-        NotificationManager mManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-        mManager.cancel(Config.NOTIFICATION_INDEX);
+        if (isShowNotification) {
+            NotificationManager mManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+            mManager.cancel(Config.NOTIFICATION_INDEX);
+            if (isHideNotification) {
+                //利用漏洞在 API Level 18 及以上的 Android 系统中，启动前台服务而不显示通知
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
+                    ServiceUtil.stopService(context, HideNotificationService.class);
+                }
+            }
+        }
 
+        // TODO: 2019/3/25 结束后台无声音乐
+        if (isPlayMusic) {
+            ServiceUtil.stopService(context, PlayMusicService.class);
+        }
+
+        // TODO: 2019/3/25 结束屏幕监听
+        if (isUseSinglePxActivity) {
+            screenReceiverUtil.unregisterScreenReceiverListener();
+            screenManager = null;
+            screenReceiverUtil = null;
+        }
+
+        // TODO: 2019/3/25 解除销毁广播
         if (stopSelfBroadcastReceiver != null) {
             unregisterReceiver(stopSelfBroadcastReceiver);
             stopSelfBroadcastReceiver = null;
