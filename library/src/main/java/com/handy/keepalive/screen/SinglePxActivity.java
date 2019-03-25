@@ -38,9 +38,9 @@ public class SinglePxActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        if (Config.isShowLog) {
+    protected void onPause() {
+        super.onPause();
+        if (isFinishing() && Config.isShowLog) {
             Log.d(Config.LOG_TAG, this.getClass().getSimpleName() + " => onFinish()");
         }
     }
