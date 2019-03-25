@@ -9,8 +9,6 @@ import android.support.annotation.NonNull;
 import com.handy.keepalive.BaseServiceConnection;
 import com.handy.keepalive.config.Config;
 
-import java.util.Objects;
-
 
 /**
  * 服务工具类
@@ -31,7 +29,7 @@ public class ServiceUtil {
     public static void unbindService(@NonNull final Context context, @NonNull final Class<? extends Service> serviceClass, @NonNull BaseServiceConnection connection) {
         if (connection.isConnected) {
             context.unbindService(connection);
-            connection.onServiceDisconnected(new ComponentName(Objects.requireNonNull(serviceClass.getPackage()).getName(), serviceClass.getName()));
+            connection.onServiceDisconnected(new ComponentName(serviceClass.getPackage() == null ? "null" : serviceClass.getPackage().getName(), serviceClass.getName()));
         }
     }
 
