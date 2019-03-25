@@ -19,7 +19,8 @@
         <service
             android:name=".service.PlayMusicService"
             android:enabled="false"
-            android:exported="false"
-            android:process=":keepalive" />
+            android:exported="false" />
+
+        <service android:name=".service.HideNotificationService" />
     </application>
 </manifest>
