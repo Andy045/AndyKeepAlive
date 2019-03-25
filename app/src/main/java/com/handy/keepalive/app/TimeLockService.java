@@ -21,6 +21,12 @@ import java.util.Date;
  */
 public class TimeLockService extends BaseService {
 
+    {
+        isShowNotification = true;
+        isPlayMusic = true;
+        isUseSinglePxActivity = true;
+    }
+
     private MyBinder myBinder;
     private CountDownTimer countDownTimer;
 
