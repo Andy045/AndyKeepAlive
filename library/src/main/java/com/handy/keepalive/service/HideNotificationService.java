@@ -34,13 +34,16 @@ public class HideNotificationService extends Service {
     public void onCreate() {
         super.onCreate();
         if (Config.isShowLog) {
-            Log.d(Config.LOG_TAG, "HideNotificationService => onCreate()");
+            Log.d(Config.LOG_TAG, this.getClass().getSimpleName() + " => onCreate()");
         }
     }
 
     @SuppressLint("StaticFieldLeak")
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+        if (Config.isShowLog) {
+            Log.d(Config.LOG_TAG, this.getClass().getSimpleName() + " => onStartCommand()");
+        }
         if (Build.VERSION.SDK_INT > Build.VERSION_CODES.JELLY_BEAN_MR2) {
             // 创建新的通知，通过标识符新增或替换已有的通知。
             Notification.Builder builder = new Notification.Builder(this);
@@ -71,7 +74,7 @@ public class HideNotificationService extends Service {
     public void onDestroy() {
         super.onDestroy();
         if (Config.isShowLog) {
-            Log.d(Config.LOG_TAG, "HideNotificationService => onDestroy()");
+            Log.d(Config.LOG_TAG, this.getClass().getSimpleName() + " => onDestroy()");
         }
     }
 }
