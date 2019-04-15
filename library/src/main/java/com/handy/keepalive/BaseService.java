@@ -1,10 +1,12 @@
 package com.handy.keepalive;
 
 import android.app.Notification;
+import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
@@ -218,10 +220,29 @@ public abstract class BaseService extends Service implements BaseServiceApi {
 
     @Override
     public Notification getNotification() {
-        Notification.Builder builder = new Notification.Builder(context);
-        builder.setSmallIcon(R.mipmap.ic_launcher);
-        builder.setContentTitle(getResources().getString(R.string.notification_title));
-        builder.setContentText(getResources().getString(R.string.notification_content));
-        return builder.build();
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            NotificationChannel notificationChannel = new NotificationChannel("com.handy.keepalive", "keepalive", NotificationManager.IMPORTANCE_HIGH);
+            notificationChannel.enableLights(true);
+            notificationChannel.setLightColor(Color.RED);
+            notificationChannel.setShowBadge(true);
+            notificationChannel.setLockscreenVisibility(Notification.VISIBILITY_PUBLIC);
+            NotificationManager manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+            manager.createNotificationChannel(notificationChannel);
+
+            Notification notification = new Notification.Builder(this).setChannelId("com.handy.keepalive")
+                    .setTicker("Nature")
+                    .setSmallIcon(R.mipmap.ic_notification)
+                    .setContentTitle(getResources().getString(R.string.notification_title))
+                    .setContentText(getResources().getString(R.string.notification_content))
+                    .getNotification();
+            notification.flags |= Notification.FLAG_NO_CLEAR;
+            return notification;
+        } else {
+            Notification.Builder builder = new Notification.Builder(this);
+            builder.setSmallIcon(R.mipmap.ic_launcher);
+            builder.setContentTitle(getResources().getString(R.string.notification_title));
+            builder.setContentText(getResources().getString(R.string.notification_content));
+            return builder.build();
+        }
     }
 }
